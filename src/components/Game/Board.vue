@@ -1,5 +1,6 @@
 <template>
   <div>
+    BOARD
   </div>
 </template>
 
