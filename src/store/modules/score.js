@@ -2,21 +2,33 @@
 import axios from 'axios';
 
 
-const state = [
-  { id: 1, winner: 'Alex', date: 'today' },
-  { id: 2, winner: 'Max', date: 'yesterday' },
-  { id: 3, winner: 'Alexios', date: 'today' }
-];
+const state = { scores: [] };
 
 const mutations = {
-  addItems: (state, item) => state.unshift(...item)
+  setScores: (state, scores) => state.scores = scores,
+  addScore: (state, newScore) => state.scores = [...state.scores, newScore]
 };
 
 const actions = {
+  async fetchScores({ commit }) {
+    const result = await axios
+      .get('https://starnavi-frontend-test-task.herokuapp.com/winners');
 
+    commit('setScores', result.data);
+  },
+
+  async addScore({ commit }, winner) {
+    const result = await axios.post(
+      'https://starnavi-frontend-test-task.herokuapp.com/winners',
+      { winner, date: `${new Date().toDateString()}` }
+    );
+
+    commit('addScore', result.data[result.data.length - 1])
+  }
 };
+
 const getters = {
-  allScores: (state) => [...state]
+  scoreList: state => state.scores
 };
 
 

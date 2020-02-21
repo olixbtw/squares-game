@@ -1,20 +1,14 @@
 <template>
   <div class="score_item">
-    <span class="name">{{ name }}</span>
-    <span class="date">{{ date_edited }}</span>
+    <span class="name">{{ winner }}</span>
+    <span class="date">{{ date }}</span>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ScoreItem',
-  props: { name: String, date: String },
-  computed: {
-    date_edited() {
-      // unified output for date
-      return this.date;
-    }
-  }
+  props: { winner: String, date: String }
 };
 </script>
 
