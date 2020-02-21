@@ -1,10 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <div class="container">
+        <router-link to="/">Game</router-link> |
+        <router-link to="/score">Scores</router-link>
+      </div>
     </div>
-    <router-view/>
+
+    <div class="container">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -15,6 +20,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  font-size: 20px;
 }
 
 #nav {
@@ -28,5 +34,11 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 </style>
