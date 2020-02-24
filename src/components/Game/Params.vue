@@ -1,17 +1,12 @@
 <template>
   <div>
     <div class="gameSetup">
-      <select v-model="gameMode">
-        <option v-for="(item, key) in settings" :key="key" :value="key">
+      <select @change="selectMode">
+        <option v-for="(item, key) in get_gameSettings" :key="key" :value="key">
           {{ key }}
         </option>
       </select>
-      <input
-        type="text"
-        placeholder="Enter your name"
-        v-model="currentPlayer"
-        :selected="gameMode"
-      />
+      <input type="text" placeholder="Enter your name" v-model="nameField" />
       <button @click="startGame">Start Game</button>
     </div>
 
@@ -23,36 +18,31 @@
 
 <script>
 import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Params',
   data: () => ({
-    currentPlayer: '',
-    gameMode: '',
-    settings: {},
-    err: []
+    nameField: ''
   }),
   methods: {
+    ...mapActions(['setPlayer', 'setDifficulty']),
     startGame() {
-      let { field, delay } = this.settings[this.gameMode];
-
-      if (this.currentPlayer && currentPlayer.length) {
-        this.$emit('clicked', this.settings[this.gameMode]);
-        this.currentPlayer = '';
+      if (this.nameField && this.nameField.length) {
+        this.setPlayer(this.nameField);
+        //start game
       }
+    },
+    selectMode(e) {
+      this.setDifficulty(e.target.value);
     }
   },
-  created() {
-    axios
-      .get('https://starnavi-frontend-test-task.herokuapp.com/game-settings')
-      .then(res => {
-        this.settings = res.data;
-        this.gameMode = [...Object.keys(this.settings)][0];
-        return res;
-      })
-      .catch(error => err.push(error));
-  }
+  computed: mapGetters(['get_gameSettings'])
 };
 </script>
 
-<style></style>
+<style>
+.gameSetup {
+  margin-bottom: 30px;
+}
+</style>

@@ -6,14 +6,13 @@
         <router-link to="/score">Scores</router-link>
       </div>
     </div>
-
     <div class="container">
       <router-view />
     </div>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -21,10 +20,19 @@
   text-align: center;
   color: #2c3e50;
   font-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+$navfix: 20px;
 #nav {
-  padding: 30px;
+  position: fixed;
+  top: 0 - $navfix;
+  left: 0;
+  width: 100%;
+  padding: 5px 0;
 }
 
 #nav a {
@@ -38,7 +46,11 @@
 
 .container {
   width: 90%;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: $navfix auto 0;
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 0 15px;
+  }
 }
 </style>
