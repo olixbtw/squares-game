@@ -32,8 +32,7 @@ const actions = {
     const result = { data: require('../../data/game-settings.json') };
 
     commit('setupSettings', result.data)
-    commit('setDifficulty', [...Object.keys(result.data)][0])
-    dispatch('generateBoard')
+    dispatch('setDifficulty', [...Object.keys(result.data)][0])
   },
 
   generateBoard({ commit, state }) {
@@ -46,40 +45,49 @@ const actions = {
     commit('setBoard', field);
   },
 
-  startGame({ commit, dispatch }) {
-    dispatch('setActiveCell')
-    commit('setGameProcess', true)
-    console.log('game started')
+  startGame({ commit, dispatch }, player) {
+    if (player && player.length) {
+      commit('setPlayer', player)
+      commit('setGameProcess', true)
+      dispatch('generateBoard')
+      dispatch('setActiveCell')
+    }
   },
-  finishGame({ commit }) {
+
+  finishGame({ commit, state, dispatch }) {
+    let board = [...state.gameBoard]
     commit('setGameProcess', false)
-    console.log('game finished')
+
+    let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
+      ? 'player'
+      : 'computer'
+
+    dispatch('addScore', winner)
   },
-  setActiveCell({ commit, state }) {
+
+  setActiveCell({ commit, state, dispatch }) {
     let board = [...state.gameBoard]
     let activeAlready = [...board].filter(e => e === 'active')
     let movesLeft = [...board].filter(e => typeof e === 'number');
-    if (!activeAlready.length) {
+
+    if (!movesLeft.length) { dispatch('finishGame') }
+    else if (!activeAlready.length) {
       let nextMove = Math.floor(Math.random() * movesLeft.length);
       board[movesLeft[nextMove]] = 'active';
 
       commit('setBoard', board);
-    } else {
-      if (!movesLeft.length) dispatch('finishGame')
     }
   },
+
   makeMove({ commit, dispatch, state }, { cell, winner }) {
     let board = [...state.gameBoard]
-    // console.log(board)
     if (board[cell] === 'active') {
-      console.log(winner)
       board[cell] = winner
       commit('setBoard', board);
       dispatch('setActiveCell')
     }
   },
 
-  setPlayer: ({ commit }, newName) => commit('setPlayer', newName),
   setDifficulty: ({ commit, dispatch }, newDifficulty) => {
     commit('setDifficulty', newDifficulty)
     dispatch('generateBoard')
@@ -89,6 +97,7 @@ const getters = {
   get_playerName: state => state.playerName,
   get_gameDifficulty: state => state.gameDifficulty,
   get_gameSettings: state => state.gameSettings,
+  get_gameStatus: state => state.gameStarted,
   get_gameBoard: state => state.gameBoard,
   get_delay: state => state.gameSettings[state.gameDifficulty].delay
 }

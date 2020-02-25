@@ -7,7 +7,7 @@
         </option>
       </select>
       <input type="text" placeholder="Enter your name" v-model="nameField" />
-      <button @click="startGame">Start Game</button>
+      <button @click="handleClick">Start Game</button>
     </div>
 
     <div class="message">
@@ -26,12 +26,9 @@ export default {
     nameField: ''
   }),
   methods: {
-    ...mapActions(['setPlayer', 'setDifficulty']),
-    startGame() {
-      if (this.nameField && this.nameField.length) {
-        this.setPlayer(this.nameField);
-        //start game
-      }
+    ...mapActions(['setDifficulty', 'startGame']),
+    handleClick() {
+      this.startGame(this.nameField);
     },
     selectMode(e) {
       this.setDifficulty(e.target.value);

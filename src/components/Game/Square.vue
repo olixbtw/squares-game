@@ -7,6 +7,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+let moveTimer;
+
 export default {
   name: 'Square',
   props: ['index', 'status'],
@@ -14,22 +16,25 @@ export default {
     ...mapActions(['makeMove']),
     handleClick(e, winner = 'player') {
       this.makeMove({ cell: this.index, winner });
+    },
+    startTimer() {
+      if (this.status === 'active' && this.get_gameStatus)
+        moveTimer = setTimeout(e => {
+          this.handleClick(e, 'computer');
+        }, this.get_delay);
     }
   },
   computed: {
-    ...mapGetters(['get_delay'])
+    ...mapGetters(['get_delay', 'get_gameStatus'])
   },
   updated() {
-    if (this.status === 'active')
-      setTimeout(e => {
-        this.handleClick(e, 'computer');
-      }, this.get_delay);
+    this.startTimer();
   },
   created() {
-    if (this.status === 'active')
-      setTimeout(e => {
-        this.handleClick(e, 'computer');
-      }, this.get_delay);
+    this.startTimer();
+  },
+  destroyed() {
+    clearTimeout(moveTimer);
   }
 };
 </script>

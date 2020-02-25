@@ -17,7 +17,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Board',
   methods: {
-    ...mapActions(['startGame'])
+    // ...mapActions(['startGame'])
   },
   components: { Square },
   computed: {
@@ -25,7 +25,7 @@ export default {
   },
   created() {
     //start only when player cicks
-    this.startGame();
+    // this.startGame();
   }
 };
 </script>
