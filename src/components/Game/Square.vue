@@ -40,8 +40,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/vars.scss';
+
 .game-square {
-  border: 1px solid rgb(153, 151, 150);
+  border: 1px solid $col3;
   padding: 5px;
   width: 100%;
   box-sizing: border-box;
@@ -55,15 +57,15 @@ export default {
 }
 
 .active {
-  background: rgb(83, 83, 190);
+  background: $col-blue;
 }
 
 .player {
-  background: rgb(62, 134, 13);
+  background: $col-green;
 }
 
 .computer {
-  background: rgb(199, 71, 71);
+  background: $col-red;
 }
 
 .square_content {

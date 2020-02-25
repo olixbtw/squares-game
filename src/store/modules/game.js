@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+
 const state = {
   //setup
   playerName: '',
@@ -25,14 +28,13 @@ const mutations = {
   }
 }
 const actions = {
-  async fetchSettings({ commit, dispatch }) {
-    // const result = await axios
-    //   .get('https://starnavi-frontend-test-task.herokuapp.com/game-settings');
+  async fetchSettings({ commit }) {
+    const result = await axios
+      .get('https://starnavi-frontend-test-task.herokuapp.com/game-settings');
 
-    const result = { data: require('../../data/game-settings.json') };
+    // const result = { data: require('../../data/game-settings.json') };
 
     commit('setupSettings', result.data)
-    dispatch('setDifficulty', [...Object.keys(result.data)][0])
     commit('setMessage', `Let's play the game!`)
   },
 
@@ -46,16 +48,20 @@ const actions = {
     commit('setBoard', field);
   },
 
-  startGame({ commit, dispatch }, player) {
-    if (player && player.length) {
+  resetBoard({ commit }) {
+    commit('setDifficulty', '');
+    commit('setBoard', []);
+  },
+
+  startGame({ commit, dispatch, state }, player) {
+    if (player && player.length && state.gameDifficulty) {
+
       commit('setPlayer', player)
       commit('setGameProcess', true)
       dispatch('generateBoard')
       dispatch('setActiveCell')
 
       commit('setMessage', `Game started`)
-    } else {
-      commit('setMessage', `Enter your name, then you can start`)
     }
   },
 
@@ -67,20 +73,23 @@ const actions = {
   },
 
   setActiveCell({ commit, state, dispatch }) {
-    let board = [...state.gameBoard]
-    let activeAlready = board.filter(e => e === 'active')
-    let movesLeft = board.filter(e => typeof e === 'number');
+    if (state.gameStarted) {
 
-    if (!movesLeft.length) {
-      let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
-        ? state.playerName
-        : 'Computer'
-      dispatch('finishGame', winner)
-    }
-    else if (!activeAlready.length) {
-      let nextMove = Math.floor(Math.random() * movesLeft.length);
-      board[movesLeft[nextMove]] = 'active';
-      commit('setBoard', board);
+      let board = [...state.gameBoard]
+      let activeAlready = board.filter(e => e === 'active')
+      let movesLeft = board.filter(e => typeof e === 'number');
+
+      if (!movesLeft.length) {
+        let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
+          ? state.playerName
+          : 'Computer'
+        dispatch('finishGame', winner)
+      }
+      else if (!activeAlready.length) {
+        let nextMove = Math.floor(Math.random() * movesLeft.length);
+        board[movesLeft[nextMove]] = 'active';
+        commit('setBoard', board);
+      }
     }
   },
 

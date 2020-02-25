@@ -13,14 +13,17 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+
+@import '@/vars.scss';
 .score_item {
-  padding: 7px 15px;
+  padding: 9px 15px;
   display: block;
   text-align: left;
-  background: #b0b3bd;
-  color: #403f44;
-  margin-bottom: 2px;
+  background: $col4;
+  border-radius: 2px;
+  color: $col1;
+  margin-bottom: 3px;
   display: flex;
 }
 .name {

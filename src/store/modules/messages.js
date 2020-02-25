@@ -11,8 +11,7 @@ const mutations = {
 const actions = {};
 
 const getters = {
-  get_currentMessage: state => state.message,
-  get_messageActive: state => state.message.length ? true : false
+  get_currentMessage: state => state.message
 };
 
 

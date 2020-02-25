@@ -13,12 +13,13 @@
 </template>
 
 <style lang="scss">
+@import '@/vars.scss';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $col-main;
   font-size: 20px;
 
   display: flex;
@@ -32,11 +33,11 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: $col-main;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: $col-green;
 }
 
 h1 {

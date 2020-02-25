@@ -17,15 +17,15 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Board',
   methods: {
-    // ...mapActions(['startGame'])
+    ...mapActions(['finishGame', 'resetBoard'])
   },
   components: { Square },
   computed: {
     ...mapGetters(['get_gameBoard', 'get_gameDifficulty'])
   },
-  created() {
-    //start only when player cicks
-    // this.startGame();
+  destroyed() {
+    this.resetBoard();
+    this.finishGame('Computer');
   }
 };
 </script>
@@ -40,21 +40,20 @@ export default {
   grid-auto-columns: auto;
 }
 
-$width: 1fr;
 .easyMode {
   //25
-  grid-template-columns: repeat(5, $width);
+  grid-template-columns: repeat(5, 1fr);
 }
 .normalMode {
   //100
-  grid-template-columns: repeat(10, $width);
+  grid-template-columns: repeat(10, 1fr);
 }
 .hardMode {
   //225
-  grid-template-columns: repeat(15, $width);
+  grid-template-columns: repeat(15, 1fr);
 
   @media (max-width: 330px) {
-    grid-template-columns: repeat(9, $width);
+    grid-template-columns: repeat(9, 1fr);
   }
 }
 </style>
