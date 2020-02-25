@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="gameSetup">
-      <select @change="selectMode" ref="selectedMode">
+      <select @change="selectMode">
         <option disabled hidden selected>{{ defaultModeMsg }}</option>
         <option v-for="(item, key) in get_gameSettings" :key="key" :value="key">
           {{ key.split(/[A-Z]/)[0].replace(/^\w/, c => c.toUpperCase()) }}

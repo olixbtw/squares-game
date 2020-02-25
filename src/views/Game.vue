@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <h1>Game</h1>
-    <Params @clicked="gameStart" />
+    <Params />
     <Board />
   </div>
 </template>
@@ -19,11 +19,7 @@ export default {
     Board
   },
   methods: {
-    ...mapActions(['fetchSettings']),
-    gameStart(val) {
-      //all game start logic
-      console.log(val);
-    }
+    ...mapActions(['fetchSettings'])
   },
   created() {
     this.fetchSettings();
