@@ -7,11 +7,14 @@
         </option>
       </select>
       <input type="text" placeholder="Enter your name" v-model="nameField" />
-      <button @click="handleClick">Start Game</button>
+      <button @click="startGame(nameField)" v-if="firstGame">Play</button>
+      <button @click="startGame(nameField)" v-if="!firstGame && !get_gameStatus">Play Again</button>
+      <button @click="finishGame('Computer')" v-if="get_gameStatus">Finish Game</button>
     </div>
 
-    <div class="message">
-      Message Here
+    <div class="message" :class:active="get_messageActive">
+      {{ get_currentMessage }}
+      <!--  -->
     </div>
   </div>
 </template>
@@ -26,20 +29,41 @@ export default {
     nameField: ''
   }),
   methods: {
-    ...mapActions(['setDifficulty', 'startGame']),
-    handleClick() {
-      this.startGame(this.nameField);
-    },
+    ...mapActions(['setDifficulty', 'startGame', 'finishGame']),
     selectMode(e) {
       this.setDifficulty(e.target.value);
     }
   },
-  computed: mapGetters(['get_gameSettings'])
+  computed: {
+    ...mapGetters([
+      'get_gameSettings',
+      'get_gameStatus',
+      'get_messageActive',
+      'get_currentMessage'
+    ]),
+    firstGame() {
+      return this.get_gameStatus === null ? true : false;
+    }
+  }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .gameSetup {
-  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+}
+
+.message {
+  margin: 25px 0;
+  min-height: 1.2em;
+  line-height: 1.2;
+  .active {
+    color: red;
+    font-weight: bold;
+  }
 }
 </style>

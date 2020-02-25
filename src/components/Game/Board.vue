@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .game-board {
-  margin: 50px auto;
+  margin: 25px auto;
 
   display: grid;
   grid-gap: 1px;

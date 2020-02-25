@@ -26,13 +26,8 @@
   min-height: 100vh;
 }
 
-$navfix: 20px;
 #nav {
-  position: fixed;
-  top: 0 - $navfix;
-  left: 0;
-  width: 100%;
-  padding: 5px 0;
+  padding: 10px 0;
 }
 
 #nav a {
@@ -44,10 +39,14 @@ $navfix: 20px;
   color: #42b983;
 }
 
+h1 {
+  margin: 25px 0;
+}
+
 .container {
   width: 90%;
   max-width: 600px;
-  margin: $navfix auto 0;
+  margin: 0 auto 0;
   @media (max-width: 600px) {
     width: 100%;
     padding: 0 15px;

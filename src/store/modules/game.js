@@ -4,7 +4,7 @@ const state = {
   gameDifficulty: '',
 
   //parameters
-  gameStarted: false,
+  gameStarted: null,
   gameProgress: 0,
   gameBoard: [],
 
@@ -33,6 +33,7 @@ const actions = {
 
     commit('setupSettings', result.data)
     dispatch('setDifficulty', [...Object.keys(result.data)][0])
+    commit('setMessage', `Let's play the game!`)
   },
 
   generateBoard({ commit, state }) {
@@ -51,30 +52,34 @@ const actions = {
       commit('setGameProcess', true)
       dispatch('generateBoard')
       dispatch('setActiveCell')
+
+      commit('setMessage', `Game started`)
+    } else {
+      commit('setMessage', `Enter your name, then you can start`)
     }
   },
 
-  finishGame({ commit, state, dispatch }) {
-    let board = [...state.gameBoard]
+  finishGame({ commit, dispatch }, winner) {
     commit('setGameProcess', false)
-
-    let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
-      ? 'player'
-      : 'computer'
-
     dispatch('addScore', winner)
+
+    commit('setMessage', `${winner} wins`)
   },
 
   setActiveCell({ commit, state, dispatch }) {
     let board = [...state.gameBoard]
-    let activeAlready = [...board].filter(e => e === 'active')
-    let movesLeft = [...board].filter(e => typeof e === 'number');
+    let activeAlready = board.filter(e => e === 'active')
+    let movesLeft = board.filter(e => typeof e === 'number');
 
-    if (!movesLeft.length) { dispatch('finishGame') }
+    if (!movesLeft.length) {
+      let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
+        ? state.playerName
+        : 'Computer'
+      dispatch('finishGame', winner)
+    }
     else if (!activeAlready.length) {
       let nextMove = Math.floor(Math.random() * movesLeft.length);
       board[movesLeft[nextMove]] = 'active';
-
       commit('setBoard', board);
     }
   },
@@ -102,11 +107,9 @@ const getters = {
   get_delay: state => state.gameSettings[state.gameDifficulty].delay
 }
 
-const gameModule = {
+export default {
   state,
   mutations,
   actions,
   getters
-};
-
-export default gameModule;
+};;
