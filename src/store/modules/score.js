@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 
@@ -14,18 +13,19 @@ const actions = {
     const result = await axios
       .get('https://starnavi-frontend-test-task.herokuapp.com/winners');
 
-      commit('setScores', result.data);
+    commit('setScores', result.data);
   },
 
   async addScore({ commit }, winner) {
+    const result = await axios
+      .post(
+        'https://starnavi-frontend-test-task.herokuapp.com/winners',
+        { winner, date: `${new Date().toDateString()}` }
+      );
 
-    console.log(winner)
+    commit('addScore', result.data[result.data.length - 1])
 
-    // const result = await axios.post(
-    //   'https://starnavi-frontend-test-task.herokuapp.com/winners',
-    //   { winner, date: `${new Date().toDateString()}` }
-    // );
-    // commit('addScore', result.data[result.data.length - 1])
+    // console.log(`add score for - ${winner}`)
   }
 };
 

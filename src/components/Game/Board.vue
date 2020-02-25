@@ -17,15 +17,15 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Board',
   methods: {
-    // ...mapActions(['startGame'])
+    ...mapActions(['finishGame', 'resetBoard'])
   },
   components: { Square },
   computed: {
     ...mapGetters(['get_gameBoard', 'get_gameDifficulty'])
   },
-  created() {
-    //start only when player cicks
-    // this.startGame();
+  destroyed() {
+    this.resetBoard();
+    this.finishGame('Computer');
   }
 };
 </script>
