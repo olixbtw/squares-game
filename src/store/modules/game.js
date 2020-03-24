@@ -76,16 +76,22 @@ const actions = {
     if (state.gameStarted) {
 
       let board = [...state.gameBoard]
-      let activeAlready = board.filter(e => e === 'active')
       let movesLeft = board.filter(e => typeof e === 'number');
 
-      if (!movesLeft.length) {
-        let winner = board.filter(e => e === 'player').length > board.filter(e => e === 'computer').length
+      let movesWon = {
+        player: board.filter(e => e === 'player').length,
+        computer: board.filter(e => e === 'computer').length
+      }
+
+      let obviousWinner = board.length / movesWon.player <= 2 || board.length / movesWon.computer <= 2
+
+      if (!movesLeft.length || obviousWinner) {
+        let winner = movesWon.player > movesWon.computer
           ? state.playerName
           : 'Computer'
         dispatch('finishGame', winner)
       }
-      else if (!activeAlready.length) {
+      else {
         let nextMove = Math.floor(Math.random() * movesLeft.length);
         board[movesLeft[nextMove]] = 'active';
         commit('setBoard', board);

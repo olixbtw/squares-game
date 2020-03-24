@@ -21,11 +21,13 @@ export default {
   },
   components: { Square },
   computed: {
-    ...mapGetters(['get_gameBoard', 'get_gameDifficulty'])
+    ...mapGetters(['get_gameBoard', 'get_gameDifficulty', 'get_gameStatus'])
   },
   destroyed() {
-    this.resetBoard();
-    this.finishGame('Computer');
+    if (this.get_gameStatus) {
+      this.resetBoard();
+      this.finishGame('Computer');
+    }
   }
 };
 </script>
